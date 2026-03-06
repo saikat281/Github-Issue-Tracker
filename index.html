@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Github Issue Tracker | Login</title>
+    <link rel="shortcut icon" href="assets/github-logo.png" type="image/x-icon">
+
+    <!-- Fontawesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">
+
+    <!-- Tailwind + Daisy UI -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+
+</head>
+
+<body class="">
+    <section id="login" class="w-[520px] mx-auto  mt-28 shadow-sm py-8 px-6">
+        <div class="space-y-2">
+            <img class="mx-auto" src="assets/github-logo.png" alt="">
+            <h1 class="text-3xl text-[#1F2937] font-semibold text-center">GitHub Issues Tracker</h1>
+            <p class="text-center text-[#1F293790] font-semibold">Sign in to manage your issues</p>
+        </div>
+        <div>
+            <fieldset class="fieldset rounded-box w-full  p-4 mx-auto">
+
+                <label class="label text-[#1F2937] font-bold">Username</label>
+                <input id="input-name" type="email" class="input w-full rounded-md" placeholder="Enter Uername" />
+                <p class="text-blue-900">Default: admin</p>
+
+                <label class="label text-[#1F2937] font-bold">Password</label>
+                <input id="input-pin" type="password" class="input w-full rounded-md" placeholder="Enter Password" />
+                <p class="text-blue-900">Default: admin123</p>
+                <button id="login-btn" class="btn btn-primary mt-4">Sign In</button>
+
+                <p class="mx-auto">OR</p>
+
+
+                <div class="text-center bg-slate-100 p-4 rounded-md">
+                    <p>Demo Credentials:</p>
+                    <p class="text-[16px]"><span class="font-semibold">Username:</span>admin</p>
+                    <p class="text-[16px]"><span class="font-semibold">Password:</span>admin123</p>
+                </div>
+            </fieldset>
+
+        </div>
+    </section>
+
+    <script src="script/login.js"></script>
+</body>
+
+</html>
