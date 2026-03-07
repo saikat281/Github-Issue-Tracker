@@ -13,6 +13,6 @@ document.getElementById("login-btn").addEventListener("click",() =>{
         return;
     }
     else{
-        window.location.assign("/home.html");
+        window.location.assign("home.html");
     }
 })
