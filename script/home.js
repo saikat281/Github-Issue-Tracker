@@ -1,21 +1,64 @@
-const loadAllIssue = () =>{
+const loadAllIssue = () => {
     fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues") //promise
-    .then((res) => res.json())//promise
-    .then((json) => displayAllIssue(json.data));
+        .then((res) => res.json())//promise
+        .then((json) => displayAllIssue(json.data));
 }
 loadAllIssue();
 
-const displayAllIssue = (Alldata) =>{
+
+
+
+
+const cardPriority = (priority) => {
+
+    if (priority == "high") {
+
+        return `<img class="size-9" src="assets/Open-Status.png" alt="">
+                 <p class="text-red-500 bg-red-100 py-2 px-12 rounded-full font-semibold">${priority}</p>`;
+    }
+    else if (priority == "medium") {
+
+        return `<img class="size-9" src="assets/Open-Status.png" alt="">
+                 <p class="text-[#D97706] bg-[#FDE68A95] py-2 px-12 rounded-full font-semibold">${priority}</p>`;
+    }
+    else {
+
+        return `<img class="size-9" src="assets/Open-Status.png" alt="">
+                 <p class="text-[#D97706] bg-[#FDE68A95] py-2 px-12 rounded-full font-semibold">${priority}</p>`;
+    }
+}
+
+
+
+
+
+
+//   <img class="size-9" src="assets/Open-Status.png" alt="">
+//   <p class="text-red-500 bg-red-100 py-2 px-12 rounded-full font-semibold"></p>
+
+const borderPriority = (priority) => {
+    if (priority == "high" || priority == "medium") {
+        return "border-green-500";
+    }
+    else {
+        return "border-red-500";
+    }
+}
+
+
+
+
+const displayAllIssue = (Alldata) => {
     const cardContainer = document.getElementById("card-container");
     cardContainer.innerHTML = '';
 
-    Alldata.forEach(data=>{
+    Alldata.forEach(data => {
+
         const card = document.createElement("div");
         card.innerHTML = `
-        <div id="card" class="space-y-4 shadow-xl rounded-lg border-t-4 border-green-500 py-4">
-                    <div class="flex justify-between items-center gap-6 p-4 ">
-                        <img class="size-9" src="assets/Open-Status.png" alt="">
-                        <p class="text-red-500 bg-red-100 py-2 px-12 rounded-full font-semibold">HIGH</p>
+        <div id="card-${data.id}" class="space-y-4 shadow-xl rounded-lg border-t-4 ${borderPriority(data.priority)} py-4">
+                    <div id="card-priority" class="flex justify-between items-center gap-6 p-4 ">
+                        ${cardPriority(data.priority)}
                     </div>
                     <div class="px-5 space-y-2">
                         <h1 class="text-2xl selectedColor font-semibold">Fix navigation menu on mobile devices</h1>
@@ -39,8 +82,9 @@ const displayAllIssue = (Alldata) =>{
                         <p class="text-[18px] text-gray-600">1/15/2024</p>
                     </div>
 
-                </div>`
-                cardContainer.appendChild(card);
+                </div>
+                `
+        cardContainer.appendChild(card);
     })
 
 }
