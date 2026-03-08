@@ -5,6 +5,7 @@ let allData = 0;
 
 
 const loadAllIssue = () => {
+
     fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues") //promise
         .then((res) => res.json())//promise
         .then((json) => {
@@ -18,6 +19,7 @@ loadAllIssue();
 
 
 const loadDetails = async (id) => {
+
     const url = `https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}` //promise
     const res = await fetch(url); //promise
     const details = await res.json();
@@ -25,9 +27,20 @@ const loadDetails = async (id) => {
 }
 
 
-const cardStatusMsg = (status) =>{
-    if(status == "open")
-    {
+const manageSpinner = (status) => {
+    if (status == true) {
+        document.getElementById("spinner").classList.remove("hidden");
+        document.getElementById("card-container").classList.add("hidden");
+    }
+    else {
+        document.getElementById("spinner").classList.add("hidden");
+        document.getElementById("card-container").classList.remove("hidden");
+    }
+}
+
+
+const cardStatusMsg = (status) => {
+    if (status == "open") {
         return `<p class="btn btn-success cursor-default rounded-full py-1 px-2 text-white">opened</p>`
     }
     else return `<p class="btn bg-[#A855F7] cursor-default rounded-full py-1 px-2 text-white">closed</p>`
@@ -68,6 +81,7 @@ const displayDetails = (detail) => {
     </div>
     `;
     document.getElementById("details_modal").showModal()
+    manageSpinner(false);
 
 }
 
@@ -189,6 +203,8 @@ const displayAllIssue = (Alldata) => {
     const total = Alldata.length;
     Total_issues.innerText = `${total} Issues`;
 
+    manageSpinner(false)
+
 }
 
 
@@ -203,45 +219,64 @@ const toggleButton = (id) => {
 
 
 document.getElementById("toggle-open").addEventListener("click", () => {
-
+    manageSpinner(true);
     //Filtering
-    const filterCard = allData.filter(data => data.status == "open")
-    //console.log(filterCard);
-    displayAllIssue(filterCard);
+    fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues") //promise      //optional: Again Load Alldata to show loading spin :(
+        .then((res) => res.json())//promise
+        .then((json) => {
+            allData = json.data;
+            const filterCard = allData.filter(data => data.status == "open")
+            //console.log(filterCard);
+            displayAllIssue(filterCard);
+        })
+
 })
 document.getElementById("toggle-close").addEventListener("click", () => {
-
+    manageSpinner(true);
     //Filtering
-    const filterCard = allData.filter(data => data.status == "closed")
-    //console.log(filterCard);
-    displayAllIssue(filterCard);
+    fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues") //promise      //optional: Again Load Alldata to show loading spin :(
+        .then((res) => res.json())//promise
+        .then((json) => {
+            allData = json.data;
+            const filterCard = allData.filter(data => data.status == "closed")
+            //console.log(filterCard);
+            displayAllIssue(filterCard);
+        })
+
 })
 document.getElementById("toggle-all").addEventListener("click", () => {
-
-    displayAllIssue(allData);
+    manageSpinner(true);
+    fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues") //promise      //optional: Again Load Alldata to show loading spin :(
+        .then((res) => res.json())//promise
+        .then((json) => {
+            allData = json.data;
+            displayAllIssue(allData);
+        })
 })
 
 
-document.getElementById("search-btn").addEventListener("click", ()=> {
+document.getElementById("search-btn").addEventListener("click", () => {
+    manageSpinner(true);
     RemoveAllActive();
+
     const input = document.getElementById("search-input");
     const searchValue = input.value.trim().toLowerCase();
     //console.log(searchValue);
     fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchValue}`)
         .then((res) => res.json())
-        .then((json)=> displayAllIssue(json.data))
+        .then((json) => displayAllIssue(json.data))
 
-        // .then((json) => {
-        //     const searchTitle = json.data;
-        //     const search='';
+    // .then((json) => {
+    //     const searchTitle = json.data;
+    //     const search='';
 
-        //     // const filtersearch = searchTitle.filter(search=> search.title.toLowerCase().includes(searchValue));
-        //     // displayAllIssue(filtersearch);
+    //     // const filtersearch = searchTitle.filter(search=> search.title.toLowerCase().includes(searchValue));
+    //     // displayAllIssue(filtersearch);
 
-        //     // searchTitle.forEach(search=>{
-        //     //     const filtersearch = search.filter(item=> item.title.toLowerCase().includes(searchValue))
-        //     // })
-        // });
+    //     // searchTitle.forEach(search=>{
+    //     //     const filtersearch = search.filter(item=> item.title.toLowerCase().includes(searchValue))
+    //     // })
+    // });
 })
 
 
