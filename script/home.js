@@ -222,5 +222,27 @@ document.getElementById("toggle-all").addEventListener("click", () => {
 })
 
 
+document.getElementById("search-btn").addEventListener("click", ()=> {
+    RemoveAllActive();
+    const input = document.getElementById("search-input");
+    const searchValue = input.value.trim().toLowerCase();
+    //console.log(searchValue);
+    fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchValue}`)
+        .then((res) => res.json())
+        .then((json)=> displayAllIssue(json.data))
+
+        // .then((json) => {
+        //     const searchTitle = json.data;
+        //     const search='';
+
+        //     // const filtersearch = searchTitle.filter(search=> search.title.toLowerCase().includes(searchValue));
+        //     // displayAllIssue(filtersearch);
+
+        //     // searchTitle.forEach(search=>{
+        //     //     const filtersearch = search.filter(item=> item.title.toLowerCase().includes(searchValue))
+        //     // })
+        // });
+})
+
 
 
