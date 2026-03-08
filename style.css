@@ -1,3 +1,7 @@
 .selectedColor{
     color:#1F2937;
 }
+.active{
+    background-color: #4A00FF;
+    color:white;
+}

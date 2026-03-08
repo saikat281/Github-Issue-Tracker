@@ -1,37 +1,59 @@
+// global
+//Assign all data after load json.data
+let allData = 0;
+
+
+
 const loadAllIssue = () => {
     fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues") //promise
         .then((res) => res.json())//promise
-        .then((json) => displayAllIssue(json.data));
+        .then((json) => {
+            allData = json.data;
+            displayAllIssue(allData);
+        })
+
+
 }
 loadAllIssue();
 
 
-
+//<img class="size-9" src="assets/Open-Status.png" alt="">
+//<img class="size-9" src="assets/Open-Status.png" alt="">
+//<img class="size-9" src="assets/Closed- Status .png" alt="">
 
 
 const cardPriority = (priority) => {
 
     if (priority == "high") {
 
-        return `<img class="size-9" src="assets/Open-Status.png" alt="">
+        return `
                  <p class="text-red-500 bg-red-100 py-2 px-12 rounded-full font-semibold">${priority}</p>`;
     }
     else if (priority == "medium") {
 
-        return `<img class="size-9" src="assets/Open-Status.png" alt="">
+        return `
                  <p class="text-[#D97706] bg-[#FDE68A95] py-2 px-12 rounded-full font-semibold">${priority}</p>`;
     }
     else {
 
-        return `<img class="size-9" src="assets/Closed- Status .png" alt="">
+        return `
                  <p class="text-[#D97706] bg-[#FDE68A95] py-2 px-12 rounded-full font-semibold">${priority}</p>`;
     }
+}
+
+
+const cardStatusIcon = (status) =>{
+    if(status == "open")
+    {
+        return `<img class="size-9" src="assets/Open-Status.png" alt="">`;
+    }
+    else return `<img class="size-9" src="assets/Closed- Status .png" alt="">`;
 }
 
 const cardLabel = (labels) => {
     return labels.map(label => {
         if (label == "bug") {
-           return `
+            return `
             <div
                 class="flex items-center gap-2 text-red-500 bg-red-100 py-2 px-7 w-max rounded-full font-semibold border-3 border-red-200">
                 <i class="fa-solid fa-bug"></i>
@@ -41,14 +63,14 @@ const cardLabel = (labels) => {
         }
         else if (label == "help wanted" || label == "documentation") {
 
-          return `
+            return `
             <div class="flex items-center   bg-[#FDE68A95]  w-max p-3 rounded-full font-semibold border-3 border-[#FDE68A]">
                 <i class="fa-regular fa-life-ring text-[#D97706]"></i>
                 <p class="text-[#D97706]">${label}</p>
             </div>
            `;
         }
-        else{
+        else {
             return `
             <div class="flex items-center   bg-[#BBF7D0]  w-max p-3 rounded-full font-semibold border-3 border-[#08e756]">
                 <i class="fa-regular fa-star text-[#00A96E]"></i>
@@ -56,14 +78,13 @@ const cardLabel = (labels) => {
             </div>
            `;
         }
-           
+
     }).join(" ");
 }
 
 
-
-const borderPriority = (priority) => {
-    if (priority == "high" || priority == "medium") {
+const borderStatus = (Status) => {
+    if (Status == "open") {
         return "border-green-500";
     }
     else {
@@ -71,16 +92,13 @@ const borderPriority = (priority) => {
     }
 }
 
-//  <div
-//                             class="flex items-center gap-2 text-red-500 bg-red-100 py-2 px-7 w-max rounded-full font-semibold border-3 border-red-200">
-//                             <i class="fa-solid fa-bug"></i>
-//                             <p>BUG</p>
-//                         </div>
-//                         <div class="flex items-center   bg-[#FDE68A95]  w-max p-3 rounded-full font-semibold border-3 border-[#FDE68A]">
-//                             <i class="fa-regular fa-life-ring text-[#D97706]"></i>
-//                             <p class="text-[#D97706]">HELP WANTED</p>
-//                         </div>
 
+const RemoveAllActive = () => {
+    const AllToggleBtn = document.querySelectorAll(".toggle-btn");
+    AllToggleBtn.forEach(btn => {
+        btn.classList.remove("active");
+    })
+}
 
 
 
@@ -88,12 +106,15 @@ const displayAllIssue = (Alldata) => {
     const cardContainer = document.getElementById("card-container");
     cardContainer.innerHTML = '';
 
+
+
     Alldata.forEach(data => {
 
         const card = document.createElement("div");
         card.innerHTML = `
-        <div id="card-${data.id}" class="h-full min-w-64 space-y-4 shadow-xl rounded-lg border-t-4 ${borderPriority(data.priority)} py-4">
+        <div id="card-${data.id}" class="h-full min-w-64 space-y-4 shadow-xl rounded-lg border-t-4 ${borderStatus(data.status)} py-4">
                     <div id="card-priority" class="flex justify-between items-center gap-6 p-4 ">
+                        ${cardStatusIcon(data.status)}
                         ${cardPriority(data.priority)}
                     </div>
                     <div class="px-5 space-y-2">
@@ -115,4 +136,43 @@ const displayAllIssue = (Alldata) => {
         cardContainer.appendChild(card);
     })
 
+    //show total issues:
+    const Total_issues = document.getElementById("issues");
+    const total = Alldata.length;
+    Total_issues.innerText = `${total} Issues`;
+
 }
+
+
+const toggleButton = (id) => {
+
+    //Toggle button
+    RemoveAllActive();
+    const toggleBtn = document.getElementById(id);
+    toggleBtn.classList.add("active");
+
+}
+
+
+document.getElementById("toggle-open").addEventListener("click",()=>{
+   
+    //Filtering
+    const filterCard = allData.filter(data => data.status == "open")
+    //console.log(filterCard);
+    displayAllIssue(filterCard);
+})
+document.getElementById("toggle-close").addEventListener("click",()=>{
+   
+    //Filtering
+    const filterCard = allData.filter(data => data.status == "closed")
+    //console.log(filterCard);
+    displayAllIssue(filterCard);
+})
+document.getElementById("toggle-all").addEventListener("click",()=>{
+   
+    displayAllIssue(allData);
+})
+
+
+
+
