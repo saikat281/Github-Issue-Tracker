@@ -174,7 +174,7 @@ const displayAllIssue = (Alldata) => {
 
         const card = document.createElement("div");
         card.innerHTML = `
-        <div onclick="loadDetails(${data.id})" id="card-${data.id}" class="h-full min-w-64 space-y-4 shadow-xl rounded-lg border-t-4 ${borderStatus(data.status)} py-4">
+        <div onclick="loadDetails(${data.id})" id="card-${data.id}" class="flex flex-col justify-between h-full  min-w-64 space-y-4 shadow-xl rounded-lg border-t-4 ${borderStatus(data.status)} py-4 cursor-pointer">
                     <div id="card-priority" class="flex justify-between items-center gap-6 p-4 ">
                         ${cardStatusIcon(data.status)}
                         ${cardPriority(data.priority)}
@@ -187,9 +187,10 @@ const displayAllIssue = (Alldata) => {
                         ${cardLabel(data.labels)}
                     </div>
 
-                    <hr class="opacity-[30%]">
+                    
                     <div class=" px-5 pb-5 ">
-                        <p class="text-[18px] text-gray-600 pb-2">#${data.id} by ${data.author}</p>
+                        <hr class="opacity-[30%]">
+                        <p class="text-[18px] text-gray-600 py-2">#${data.id} by ${data.author}</p>
                         <p class="text-[18px] text-gray-600">${data.updatedAt}</p>
                     </div>
 
